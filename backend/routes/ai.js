@@ -5,6 +5,11 @@ import pool from '../db.js';
 const router = Router();
 
 async function callOpenRouter(prompt) {
+  if (!process.env.OPENROUTER_API_KEY) {
+    const err = new Error('OPENROUTER_API_KEY is not configured on the server.');
+    err.statusCode = 503;
+    throw err;
+  }
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -361,6 +366,98 @@ Provide a JSON response with:
     res.json(result);
   } catch (err) {
     console.error('Schedule optimizer error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 11. Predictive Vehicle Maintenance
+router.post('/predict-vehicle-maintenance', async (req, res) => {
+  try {
+    const { vehicle_id } = req.body || {};
+    if (!vehicle_id) {
+      return res.status(400).json({ error: 'vehicle_id is required' });
+    }
+    const vehicleResult = await pool.query('SELECT * FROM vehicles WHERE id = $1', [vehicle_id]);
+    if (vehicleResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Vehicle not found' });
+    }
+    const vehicle = vehicleResult.rows[0];
+
+    const prompt = `You are a fleet maintenance AI for a waste management company. Predict upcoming maintenance needs and risks for the following vehicle. Return a JSON object only.
+
+Vehicle: ${JSON.stringify(vehicle)}
+
+Provide a JSON response with:
+- vehicle_id: number
+- overall_health_score_0_100: number
+- predicted_failures: array of objects with component, probability_percent, estimated_days_until_failure, severity
+- recommended_maintenance: array of objects with task, priority (low|medium|high|urgent), estimated_cost_usd, suggested_window_days
+- safety_concerns: array of strings
+- estimated_downtime_days_next_90: number
+- preventive_actions: array of strings
+- summary: short string`;
+
+    const result = await callOpenRouter(prompt);
+    res.json(result);
+  } catch (err) {
+    if (err.statusCode === 503) {
+      return res.status(503).json({ error: err.message });
+    }
+    console.error('Predict vehicle maintenance error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 12. Driver Route Coaching
+router.post('/driver-coaching', async (req, res) => {
+  try {
+    const { driver_id } = req.body || {};
+    if (!driver_id) {
+      return res.status(400).json({ error: 'driver_id is required' });
+    }
+    const driverResult = await pool.query('SELECT * FROM drivers WHERE id = $1', [driver_id]);
+    if (driverResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Driver not found' });
+    }
+    const driver = driverResult.rows[0];
+
+    // Pull recent routes for this driver as coaching context
+    const routesResult = await pool.query(
+      'SELECT * FROM collection_routes WHERE driver_id = $1 ORDER BY id DESC LIMIT 25',
+      [driver_id]
+    ).catch(() => ({ rows: [] }));
+
+    // Pull associated vehicle if any
+    const vehicleResult = driver.assigned_vehicle_id
+      ? await pool.query('SELECT * FROM vehicles WHERE id = $1', [driver.assigned_vehicle_id]).catch(() => ({ rows: [] }))
+      : { rows: [] };
+
+    const prompt = `You are a driver coaching AI for a waste management company. Generate personalized route coaching feedback. Return a JSON object only.
+
+Driver: ${JSON.stringify(driver)}
+Assigned Vehicle: ${JSON.stringify(vehicleResult.rows[0] || null)}
+Recent Routes (up to 25): ${JSON.stringify(routesResult.rows)}
+
+Provide a JSON response with:
+- driver_id: number
+- overall_score_0_100: number
+- strengths: array of strings
+- improvement_areas: array of strings
+- safety_observations: array of strings
+- fuel_efficiency_tips: array of strings
+- route_adherence_score_0_100: number
+- recommended_training_modules: array of objects with module_name, priority (low|medium|high), estimated_minutes
+- one_on_one_talking_points: array of strings
+- next_review_in_days: number
+- summary: short string`;
+
+    const result = await callOpenRouter(prompt);
+    res.json(result);
+  } catch (err) {
+    if (err.statusCode === 503) {
+      return res.status(503).json({ error: err.message });
+    }
+    console.error('Driver coaching error:', err);
     res.status(500).json({ error: err.message });
   }
 });
