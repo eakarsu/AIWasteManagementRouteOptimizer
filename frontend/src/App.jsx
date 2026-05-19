@@ -20,6 +20,7 @@ import AnomalyDetection from './pages/AnomalyDetection';
 import DemandForecasting from './pages/DemandForecasting';
 import PredictVehicleMaintenance from './pages/PredictVehicleMaintenance';
 import DriverCoaching from './pages/DriverCoaching';
+import CustomViewsPage from './pages/CustomViewsPage';
 
 // // === Batch 09 Gaps & Frontend Mounts ===
 const RealTimeAnomalyDetectionOnCollectionCompletionCfs = React.lazy(() => import('./pages/Batch09/RealTimeAnomalyDetectionOnCollectionCompletionCfs'));
@@ -71,6 +72,7 @@ function AppLayout() {
           <Route path="/ai/demand-forecasting" element={<DemandForecasting />} />
           <Route path="/ai/predict-vehicle-maintenance" element={<PredictVehicleMaintenance />} />
           <Route path="/ai/driver-coaching" element={<DriverCoaching />} />
+          <Route path="/custom-views" element={<CustomViewsPage />} />
         </Routes>
       </main>
     </div>

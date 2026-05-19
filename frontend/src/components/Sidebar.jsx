@@ -4,7 +4,7 @@ import {
   Recycle, LayoutDashboard, Route, Trash2, Truck, Calendar,
   MapPin, Users, FileText, Bell, Brain, ChevronDown,
   LogOut, Sparkles, FlaskConical, DollarSign, Leaf,
-  BarChart3, AlertTriangle, TrendingUp
+  BarChart3, AlertTriangle, TrendingUp, Eye
 } from 'lucide-react';
 
 function Sidebar() {
@@ -55,6 +55,9 @@ function Sidebar() {
         </li>
         <li className="sidebar-nav-item">
           <NavLink to="/alerts"><Bell /> Smart Alerts</NavLink>
+        </li>
+        <li className="sidebar-nav-item">
+          <NavLink to="/custom-views"><Eye /> Waste Views</NavLink>
         </li>
 
         <li className="sidebar-section-title">AI Center</li>

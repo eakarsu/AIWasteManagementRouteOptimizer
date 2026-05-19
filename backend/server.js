@@ -17,6 +17,7 @@ import reportsRoutes from './routes/reports.js';
 import alertsRoutes from './routes/alerts.js';
 import aiRoutes from './routes/ai.js';
 import customFeaturesRoutes from './routes/customFeatures.js';
+import customViewsRoutes from './routes/customViews.js';
 
 const app = express();
 const PORT = process.env.BACKEND_PORT || 3001;
@@ -48,14 +49,16 @@ app.use('/api/reports', reportsRoutes);
 app.use('/api/alerts', alertsRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/custom', customFeaturesRoutes);
+app.use('/api/custom-views', customViewsRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// // === Batch 09 Gaps & Frontend Mounts ===
-app.use('/api/gap-ai-aiwastemanagementrouteoptimizer', require('./routes/batch09GapAi')); // // === Batch 09 Gaps & Frontend Mounts ===
-app.use('/api/gap-nonai-aiwastemanagementrouteoptimizer', require('./routes/batch09GapNonai')); // // === Batch 09 Gaps & Frontend Mounts ===
+// 404 fallback — must be after all real routes (custom-views mounted above)
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not found', path: req.originalUrl });
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
