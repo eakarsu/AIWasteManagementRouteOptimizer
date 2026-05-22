@@ -22,6 +22,11 @@ import PredictVehicleMaintenance from './pages/PredictVehicleMaintenance';
 import DriverCoaching from './pages/DriverCoaching';
 import CustomViewsPage from './pages/CustomViewsPage';
 
+import CodexCustomVizFeature from './pages/CodexCustomVizFeature';
+import CodexOperationsFeature from './pages/CodexOperationsFeature';
+
+import TimelineView from './pages/TimelineView';
+
 // // === Batch 09 Gaps & Frontend Mounts ===
 const RealTimeAnomalyDetectionOnCollectionCompletionCfs = React.lazy(() => import('./pages/Batch09/RealTimeAnomalyDetectionOnCollectionCompletionCfs'));
 const DynamicPricingByNeighborhoodDemandAndWasteStreamCfs = React.lazy(() => import('./pages/Batch09/DynamicPricingByNeighborhoodDemandAndWasteStreamCfs'));
@@ -54,6 +59,10 @@ function AppLayout() {
       <Sidebar />
       <main className="main-content">
         <Routes>
+        <Route path="/insights/timeline" element={<ProtectedRoute><TimelineView /></ProtectedRoute>} />
+        <Route path="/codex/custom-viz" element={<ProtectedRoute><CodexCustomVizFeature /></ProtectedRoute>} />
+        <Route path="/codex/operations" element={<ProtectedRoute><CodexOperationsFeature /></ProtectedRoute>} />
+
           <Route path="/" element={<Dashboard />} />
           <Route path="/routes" element={<RouteOptimization />} />
           <Route path="/bins" element={<SmartBins />} />
