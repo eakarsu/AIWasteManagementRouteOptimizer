@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Recycle, Zap } from 'lucide-react';
+import { Recycle } from 'lucide-react';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -28,11 +28,6 @@ function Login() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleQuickLogin = () => {
-    setEmail('admin@waste.com');
-    setPassword('password123');
   };
 
   return (
@@ -79,15 +74,6 @@ function Login() {
           </button>
         </form>
 
-        <div className="login-divider">or</div>
-
-        <button
-          className="btn btn-secondary"
-          style={{ width: '100%', justifyContent: 'center' }}
-          onClick={handleQuickLogin}
-        >
-          <Zap size={16} /> Quick Login (Demo)
-        </button>
       </div>
     </div>
   );

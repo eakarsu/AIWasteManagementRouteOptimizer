@@ -5,6 +5,10 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '../.env' });
 
 const { Pool } = pg;
+if (process.env.ALLOW_DESTRUCTIVE_SEED !== 'true') throw new Error('ALLOW_DESTRUCTIVE_SEED=true is required');
+if (!process.env.DATABASE_URL || !process.env.SEED_ADMIN_PASSWORD) {
+  throw new Error('DATABASE_URL and SEED_ADMIN_PASSWORD are required');
+}
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 async function seed() {
@@ -132,7 +136,7 @@ async function seed() {
     `);
 
     // Seed users
-    const passwordHash = await bcrypt.hash('password123', 10);
+    const passwordHash = await bcrypt.hash(process.env.SEED_ADMIN_PASSWORD, 12);
     await client.query(`
       INSERT INTO users (email, password_hash, name, role) VALUES
       ('admin@waste.com', $1, 'Admin User', 'admin'),

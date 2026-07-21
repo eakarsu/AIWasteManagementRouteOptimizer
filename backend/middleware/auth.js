@@ -1,22 +1,16 @@
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 
-dotenv.config({ path: '../.env' });
-
-const auth = (req, res, next) => {
+export default function auth(req, res, next) {
+  const token = req.headers.authorization?.match(/^Bearer (.+)$/)?.[1];
+  if (!token) return res.status(401).json({ error: 'bearer token required' });
   try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'No token provided' });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ['HS256'] });
+    if (!decoded.id || !decoded.tenantId || !decoded.role || !Array.isArray(decoded.subjectIds)) {
+      return res.status(403).json({ error: 'signed actor, tenant, role, and subject claims required' });
     }
-
-    const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
   } catch (err) {
-    return res.status(401).json({ error: 'Invalid or expired token' });
+    return res.status(401).json({ error: 'invalid token' });
   }
-};
-
-export default auth;
+}
