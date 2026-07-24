@@ -10,7 +10,13 @@ async function callOpenRouter(prompt) {
     err.statusCode = 503;
     throw err;
   }
-  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+  const model = process.env.OPENROUTER_MODEL?.trim();
+  const baseUrl = process.env.OPENROUTER_BASE_URL?.trim().replace(/\/$/, '');
+  if (!model) throw new Error('OPENROUTER_MODEL is required');
+  if (baseUrl !== 'https://openrouter.ai/api/v1') {
+    throw new Error('OPENROUTER_BASE_URL must be https://openrouter.ai/api/v1');
+  }
+  const response = await fetch(`${baseUrl}/chat/completions`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
@@ -18,14 +24,17 @@ async function callOpenRouter(prompt) {
       'HTTP-Referer': 'http://localhost:5173',
     },
     body: JSON.stringify({
-      model: process.env.OPENROUTER_MODEL,
+      model,
       messages: [{ role: 'user', content: prompt }],
       response_format: { type: 'json_object' }
     })
   });
 
-  const data = await response.json();
-  if (!data.choices || !data.choices[0]) {
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || data.error) {
+    throw new Error(data.error?.message || `OpenRouter request failed with HTTP ${response.status}`);
+  }
+  if (!data.choices || !data.choices[0] || typeof data.choices[0].message?.content !== 'string' || !data.choices[0].message.content.trim()) {
     throw new Error('Invalid response from AI service');
   }
 
@@ -35,6 +44,13 @@ async function callOpenRouter(prompt) {
   } catch {
     return { response: content };
   }
+}
+
+async function persistAIResult(userId, endpoint, inputData, result) {
+  await pool.query(
+    'INSERT INTO ai_results (user_id, endpoint, input_data, result) VALUES ($1, $2, $3, $4)',
+    [userId, endpoint, JSON.stringify(inputData), JSON.stringify(result)]
+  );
 }
 
 // 1. Optimize Route
@@ -120,6 +136,7 @@ Provide a JSON response with:
 - warnings: any safety warnings (array of strings)`;
 
     const result = await callOpenRouter(prompt);
+    await persistAIResult(req.user.id, '/api/ai/classify-waste', { description }, result);
     res.json(result);
   } catch (err) {
     console.error('Classify waste error:', err);

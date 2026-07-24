@@ -41,6 +41,31 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.post('/register', async (req, res) => {
+  try {
+    const { email, password, name } = req.body || {};
+    if (!email || !name || typeof password !== 'string' || password.length < 12) {
+      return res.status(400).json({ error: 'email, name, and a password of at least 12 characters are required' });
+    }
+    const passwordHash = await bcrypt.hash(password, 12);
+    const result = await pool.query(
+      'INSERT INTO users (email, password_hash, name, role) VALUES ($1, $2, $3, $4) RETURNING id, email, name, role',
+      [email, passwordHash, name, 'operator']
+    );
+    const user = result.rows[0];
+    const token = jwt.sign(
+      { id: String(user.id), email: user.email, role: user.role, tenantId: process.env.GOVERNANCE_TENANT_ID, subjectIds: [`account:${user.id}`] },
+      process.env.JWT_SECRET,
+      { algorithm: 'HS256', expiresIn: '8h' }
+    );
+    return res.status(201).json({ token, user });
+  } catch (err) {
+    if (err.code === '23505') return res.status(409).json({ error: 'Email already exists' });
+    console.error('Registration error:', err.message);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
 router.get('/me', auth, async (req, res) => {
   try {
     const result = await pool.query(
