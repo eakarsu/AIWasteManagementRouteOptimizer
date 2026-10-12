@@ -1,5 +1,7 @@
 // // === Batch 09 Gaps & Frontend Mounts ===
 import React, { useState } from 'react';
+import NativeAIPresets from '../../components/NativeAIPresets';
+import AIReport from '../../components/AIReport';
 
 export default function RealTimeAnomalyDetectionOnCollectionCompletionPage() {
   const [input, setInput] = useState('');
@@ -27,6 +29,7 @@ export default function RealTimeAnomalyDetectionOnCollectionCompletionPage() {
     <div style={{ padding: 24, maxWidth: 900, margin: '0 auto' }}>
       <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>Real-time anomaly detection on collection completion</h1>
       <p style={{ color: '#666', marginBottom: 16 }}>Generated gap feature for AIWasteManagementRouteOptimizer.</p>
+      <NativeAIPresets disabled={loading} presets={[{ label: "Operations review", value: "Review a missed pickup signal when GPS shows a vehicle nearby but no completion scan was recorded." }, { label: "Exception scenario", value: "Assess duplicate completion events for the same stop and outline verification before notifying staff." }, { label: "Planning example", value: "Explain how to triage route completion gaps when device connectivity was intermittent." }]} onChoose={({ value }) => setInput(value)} />
       <textarea
         value={input}
         onChange={e => setInput(e.target.value)}
@@ -42,11 +45,7 @@ export default function RealTimeAnomalyDetectionOnCollectionCompletionPage() {
         {loading ? 'Running...' : 'Run AI'}
       </button>
       {error && <div style={{ color: 'red', marginTop: 12 }}>{error}</div>}
-      {result && (
-        <pre style={{ marginTop: 16, padding: 12, background: '#f4f4f4', borderRadius: 6, overflow: 'auto', maxHeight: 500 }}>
-{JSON.stringify(result, null, 2)}
-        </pre>
-      )}
+      <AIReport response={result} title="AI analysis" />
     </div>
   );
 }

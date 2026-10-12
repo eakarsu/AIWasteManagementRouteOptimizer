@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
 import AIOutput from '../components/AIOutput';
+import NativeAIPresets from '../components/NativeAIPresets';
 
 function DriverCoaching() {
   const [drivers, setDrivers] = useState([]);
@@ -54,6 +55,7 @@ function DriverCoaching() {
       </div>
 
       <div className="card" style={{ marginBottom: 24 }}>
+        <NativeAIPresets disabled={aiLoading} presets={['First available record', 'Next available record', 'Third available record'].map((label, index) => ({ label, disabled: index >= drivers.length, index }))} prerequisite={!drivers.length ? 'No drivers are available. Add or load a real record before using an example.' : ''} onChoose={({ index }) => setDriverId(String(drivers[index].id))} />
         <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end', flexWrap: 'wrap' }}>
           <div className="form-group" style={{ marginBottom: 0, flex: 1, minWidth: 240 }}>
             <label>Driver</label>

@@ -1,0 +1,65 @@
+[
+  {
+    "name": "AiPoweredDriverRouteCoachingAndFuelEfficiencyFeedbacPage",
+    "id": "gap-ai-aiwastemanagementrouteoptimizer/ai-powered-driver-route-coaching-and-fuel-efficiency-feedbac",
+    "title": "AI-powered driver route coaching and fuel efficiency feedback",
+    "description": "Prepare a professional advisory report for ai-powered driver route coaching and fuel efficiency feedback using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "BillinginvoicingForCommercialAccountsPage",
+    "id": "gap-nonai-aiwastemanagementrouteoptimizer/billinginvoicing-for-commercial-accounts",
+    "title": "Billing/invoicing for commercial accounts",
+    "description": "Prepare a professional advisory report for billing/invoicing for commercial accounts using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "ComplaintAndMissedPickupTicketingPage",
+    "id": "gap-nonai-aiwastemanagementrouteoptimizer/complaint-and-missed-pickup-ticketing",
+    "title": "Complaint and missed-pickup ticketing",
+    "description": "Prepare a professional advisory report for complaint and missed-pickup ticketing using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "ComputerVisionBinConditionAssessmentPage",
+    "id": "gap-ai-aiwastemanagementrouteoptimizer/computer-vision-bin-condition-assessment",
+    "title": "Computer-vision bin condition assessment",
+    "description": "Prepare a professional advisory report for computer-vision bin condition assessment using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "CustomerresidentPortalForServiceRequestsPage",
+    "id": "gap-nonai-aiwastemanagementrouteoptimizer/customerresident-portal-for-service-requests",
+    "title": "Customer/resident portal for service requests",
+    "description": "Prepare a professional advisory report for customer/resident portal for service requests using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "DriverMobileAppEndpointsPage",
+    "id": "gap-nonai-aiwastemanagementrouteoptimizer/driver-mobile-app-endpoints",
+    "title": "Driver mobile app endpoints",
+    "description": "Prepare a professional advisory report for driver mobile app endpoints using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "HazardousWasteManifestTrackingPage",
+    "id": "gap-nonai-aiwastemanagementrouteoptimizer/hazardous-waste-manifest-tracking",
+    "title": "Hazardous waste manifest tracking",
+    "description": "Prepare a professional advisory report for hazardous waste manifest tracking using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "PredictiveVehicleMaintenanceFromTelemetryPage",
+    "id": "gap-ai-aiwastemanagementrouteoptimizer/predictive-vehicle-maintenance-from-telemetry",
+    "title": "Predictive vehicle maintenance from telemetry",
+    "description": "Prepare a professional advisory report for predictive vehicle maintenance from telemetry using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  },
+  {
+    "name": "RealTimeGpsTrackingDashboardWithLiveEtasPage",
+    "id": "gap-nonai-aiwastemanagementrouteoptimizer/real-time-gps-tracking-dashboard-with-live-etas",
+    "title": "Real-time GPS tracking dashboard with live ETAs",
+    "description": "Prepare a professional advisory report for real-time gps tracking dashboard with live etas using the brief and evidence you provide. Review the findings, assumptions, and action plan before applying changes.",
+    "samples": []
+  }
+]

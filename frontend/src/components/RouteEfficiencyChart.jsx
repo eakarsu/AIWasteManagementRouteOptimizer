@@ -17,7 +17,7 @@ export default function RouteEfficiencyChart() {
   if (err) return <div style={{ color: '#c33' }}>Error: {err}</div>;
   if (!data) return <div>Loading route efficiency...</div>;
 
-  const series = data.series || [];
+  const series = Array.isArray(data.series) ? data.series : [];
   const maxScore = Math.max(100, ...series.map(s => s.efficiency_score));
 
   return (

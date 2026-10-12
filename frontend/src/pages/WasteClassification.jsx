@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Sparkles, Trash2 } from 'lucide-react';
 import AIOutput from '../components/AIOutput';
+import NativeAIPresets from '../components/NativeAIPresets';
 
 function WasteClassification() {
   const [description, setDescription] = useState('');
@@ -62,6 +63,7 @@ function WasteClassification() {
       </div>
 
       <div className="card" style={{ marginBottom: 24 }}>
+        <NativeAIPresets disabled={aiLoading} presets={[{ label: 'Mixed recyclables', value: 'Clean aluminum beverage cans, flattened cardboard boxes, and empty PET water bottles from an office break room.' }, { label: 'Food scraps', value: 'Vegetable peels, coffee grounds, and leftover rice from a cafeteria kitchen; no packaging mixed in.' }, { label: 'Battery disposal', value: 'Used rechargeable lithium-ion tool batteries and a damaged power bank collected from a maintenance shop.' }]} onChoose={({ value }) => setDescription(value)} />
         <div className="form-group" style={{ marginBottom: 16 }}>
           <label>Waste Description</label>
           <textarea

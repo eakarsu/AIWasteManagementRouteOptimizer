@@ -25,8 +25,8 @@ export default function BinFillHeatmap() {
   if (err) return <div style={{ color: '#c33' }}>Error: {err}</div>;
   if (!data) return <div>Loading bin heatmap...</div>;
 
-  const hours = data.hours || [];
-  const rows = data.rows || [];
+  const hours = Array.isArray(data.hours) ? data.hours : [];
+  const rows = Array.isArray(data.rows) ? data.rows : [];
 
   return (
     <div style={{ padding: 16, border: '1px solid #ddd', borderRadius: 8, background: '#fff' }}>
@@ -47,7 +47,7 @@ export default function BinFillHeatmap() {
           {rows.map(r => (
             <tr key={r.bin_id}>
               <td style={{ padding: '4px 8px', fontWeight: 600 }}>{r.bin_code}</td>
-              {r.values.map((v, i) => (
+              {(Array.isArray(r.values) ? r.values : []).map((v, i) => (
                 <td key={i} style={{
                   background: colorFor(v),
                   color: v > 60 ? '#fff' : '#222',

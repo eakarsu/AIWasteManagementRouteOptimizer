@@ -23,7 +23,7 @@ export default function CollectionRulesEditor() {
     try {
       const r = await fetch('/api/custom-views/collection-rules', { headers });
       const d = await r.json();
-      setRules(d.rules || []);
+      setRules(Array.isArray(d.rules) ? d.rules : []);
     } catch (e) { setErr(String(e)); }
   };
 

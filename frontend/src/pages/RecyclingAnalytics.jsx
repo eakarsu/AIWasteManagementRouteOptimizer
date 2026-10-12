@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
 import AIOutput from '../components/AIOutput';
+import NativeAIPresets from '../components/NativeAIPresets';
 
 function RecyclingAnalytics() {
   const [zones, setZones] = useState([]);
@@ -46,6 +47,7 @@ function RecyclingAnalytics() {
       </div>
 
       <div className="card" style={{ marginBottom: 24 }}>
+        <NativeAIPresets disabled={aiLoading} presets={['All zones', 'First available zone', 'Second available zone'].map((label, index) => ({ label, disabled: index > zones.length, index }))} prerequisite={!zones.length ? 'No zones are available. All Zones is available; load a zone for a specific-zone example.' : ''} onChoose={({ index }) => { setZoneId(index === 0 ? '' : String(zones[index - 1].id ?? zones[index - 1]._id)); }} />
         <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end', flexWrap: 'wrap' }}>
           <div className="form-group" style={{ marginBottom: 0, flex: 1, minWidth: 200 }}>
             <label>Zone</label>

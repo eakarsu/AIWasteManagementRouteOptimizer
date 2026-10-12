@@ -1,3 +1,8 @@
+import aiWorkspaceDependency1 from "./middleware/auth.js";
+import aiWorkspaceDependency2 from "./db.js";
+import aiWorkspaceDependency3 from "./aiWorkspaceAdapters.cjs";
+import aiWorkspaceDependency4 from "./aiWorkspace.cjs";
+import { readFileSync as readAIWorkspaceFile } from 'node:fs';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -61,6 +66,15 @@ if (generatedRoutesEnabled) {
   app.use('/api/custom-views', generated[2].default);
 }
 
+
+// Advisory AI reports only; native execution and approval routes stay unchanged.
+const aiWorkspaceSupport = aiWorkspaceDependency3;
+const aiWorkspaceFeatures = JSON.parse(readAIWorkspaceFile(new URL("./aiWorkspaceFeatures.json", import.meta.url), 'utf8'));
+const aiWorkspaceDatabase = aiWorkspaceDependency2;
+app.use('/api/report-workspace', aiWorkspaceDependency4.createAIWorkspaceRouter({
+  pool: aiWorkspaceDatabase, authenticateToken: aiWorkspaceDependency1,
+  aiRateLimiter: aiWorkspaceSupport.createWorkspaceLimiter(), features: aiWorkspaceFeatures,
+}));
 app.use((req, res) => res.status(404).json({ error: 'not found', path: req.originalUrl }));
 app.use((err, req, res, next) => {
   console.error('Unhandled request error:', err.message);

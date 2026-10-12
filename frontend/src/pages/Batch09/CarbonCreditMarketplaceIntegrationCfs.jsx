@@ -1,5 +1,7 @@
 // // === Batch 09 Gaps & Frontend Mounts ===
 import React, { useState } from 'react';
+import NativeAIPresets from '../../components/NativeAIPresets';
+import AIReport from '../../components/AIReport';
 
 export default function CarbonCreditMarketplaceIntegrationPage() {
   const [input, setInput] = useState('');
@@ -27,6 +29,7 @@ export default function CarbonCreditMarketplaceIntegrationPage() {
     <div style={{ padding: 24, maxWidth: 900, margin: '0 auto' }}>
       <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>Carbon credit marketplace integration</h1>
       <p style={{ color: '#666', marginBottom: 16 }}>Generated gap feature for AIWasteManagementRouteOptimizer.</p>
+      <NativeAIPresets disabled={loading} presets={[{ label: "Operations review", value: "Outline due diligence for verified emissions reductions from route efficiency before considering carbon credits." }, { label: "Exception scenario", value: "Review a hypothetical credit listing and identify provenance, ownership, and double counting checks." }, { label: "Planning example", value: "Compare registry integration options for municipal waste diversion credits without submitting a transaction." }]} onChoose={({ value }) => setInput(value)} />
       <textarea
         value={input}
         onChange={e => setInput(e.target.value)}
@@ -42,11 +45,7 @@ export default function CarbonCreditMarketplaceIntegrationPage() {
         {loading ? 'Running...' : 'Run AI'}
       </button>
       {error && <div style={{ color: 'red', marginTop: 12 }}>{error}</div>}
-      {result && (
-        <pre style={{ marginTop: 16, padding: 12, background: '#f4f4f4', borderRadius: 6, overflow: 'auto', maxHeight: 500 }}>
-{JSON.stringify(result, null, 2)}
-        </pre>
-      )}
+      <AIReport response={result} title="AI analysis" />
     </div>
   );
 }

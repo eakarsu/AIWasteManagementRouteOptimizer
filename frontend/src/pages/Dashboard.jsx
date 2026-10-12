@@ -35,7 +35,7 @@ function Dashboard() {
         reports: Array.isArray(results[5]) ? results[5].length : 0,
       });
       if (Array.isArray(results[4])) {
-        setRecentAlerts(results[4].slice(0, 5));
+        setRecentAlerts(results[4]);
       }
     } catch (err) {
       console.error('Dashboard fetch error:', err);
@@ -105,7 +105,7 @@ function Dashboard() {
       </div>
 
       <div className="section">
-        <div className="section-title">Recent Alerts</div>
+        <div className="section-title">Alerts</div>
         {recentAlerts.length > 0 ? (
           <div className="data-table-container">
             <table className="data-table">

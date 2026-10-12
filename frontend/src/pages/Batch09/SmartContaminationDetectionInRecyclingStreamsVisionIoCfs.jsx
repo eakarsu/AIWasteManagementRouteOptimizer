@@ -1,5 +1,7 @@
 // // === Batch 09 Gaps & Frontend Mounts ===
 import React, { useState } from 'react';
+import NativeAIPresets from '../../components/NativeAIPresets';
+import AIReport from '../../components/AIReport';
 
 export default function SmartContaminationDetectionInRecyclingStreamsVisionIoPage() {
   const [input, setInput] = useState('');
@@ -27,6 +29,7 @@ export default function SmartContaminationDetectionInRecyclingStreamsVisionIoPag
     <div style={{ padding: 24, maxWidth: 900, margin: '0 auto' }}>
       <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>Smart contamination detection in recycling streams (vision + IoT)</h1>
       <p style={{ color: '#666', marginBottom: 16 }}>Generated gap feature for AIWasteManagementRouteOptimizer.</p>
+      <NativeAIPresets disabled={loading} presets={[{ label: "Operations review", value: "Assess camera detections of food residue in mixed recycling at a transfer station; explain the evidence needed before flagging a load." }, { label: "Exception scenario", value: "Review an IoT moisture alert from a paper recycling line after rain; recommend operator checks and safe sorting steps." }, { label: "Planning example", value: "Design a pilot review for glass fragments contaminating a cardboard stream, including false positive handling and staff feedback." }]} onChoose={({ value }) => setInput(value)} />
       <textarea
         value={input}
         onChange={e => setInput(e.target.value)}
@@ -42,11 +45,7 @@ export default function SmartContaminationDetectionInRecyclingStreamsVisionIoPag
         {loading ? 'Running...' : 'Run AI'}
       </button>
       {error && <div style={{ color: 'red', marginTop: 12 }}>{error}</div>}
-      {result && (
-        <pre style={{ marginTop: 16, padding: 12, background: '#f4f4f4', borderRadius: 6, overflow: 'auto', maxHeight: 500 }}>
-{JSON.stringify(result, null, 2)}
-        </pre>
-      )}
+      <AIReport response={result} title="AI analysis" />
     </div>
   );
 }

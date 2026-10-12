@@ -74,7 +74,7 @@ router.get('/bin-heatmap', auth, async (req, res) => {
   try {
     let bins = [];
     try {
-      const r = await pool.query('SELECT id, bin_code, location, fill_level FROM bins ORDER BY id LIMIT 12');
+      const r = await pool.query('SELECT id, bin_code, location, fill_level FROM bins ORDER BY id LIMIT 20');
       bins = r.rows;
     } catch (_) { bins = []; }
 

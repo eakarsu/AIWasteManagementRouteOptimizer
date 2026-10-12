@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
 import AIOutput from '../components/AIOutput';
+import NativeAIPresets from '../components/NativeAIPresets';
 
 function WastePrediction() {
   const [zones, setZones] = useState([]);
@@ -49,6 +50,7 @@ function WastePrediction() {
       </div>
 
       <div className="card" style={{ marginBottom: 24 }}>
+        <NativeAIPresets disabled={aiLoading} presets={['All zones', 'First available zone', 'Second available zone'].map((label, index) => ({ label, disabled: index > zones.length, index }))} prerequisite={!zones.length ? 'No zones are available. All Zones is available; load a zone for a specific-zone example.' : ''} onChoose={({ index }) => { setZoneId(index === 0 ? '' : String(zones[index - 1].id ?? zones[index - 1]._id)); setPeriod(['weekly', 'monthly', 'quarterly'][index]); }} />
         <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end', flexWrap: 'wrap' }}>
           <div className="form-group" style={{ marginBottom: 0, flex: 1, minWidth: 200 }}>
             <label>Zone</label>
@@ -90,13 +92,13 @@ function WastePrediction() {
                 </tr>
               </thead>
               <tbody>
-                {bins.slice(0, 10).map((bin) => (
+                {bins.map((bin) => (
                   <tr key={bin.id || bin._id}>
                     <td>{bin.location || '-'}</td>
-                    <td>{bin.binType || '-'}</td>
-                    <td>{bin.fillLevel || 0}%</td>
-                    <td>{bin.zone || '-'}</td>
-                    <td>{bin.lastCollected ? new Date(bin.lastCollected).toLocaleDateString() : '-'}</td>
+                    <td>{bin.type || '-'}</td>
+                    <td>{bin.fill_level ?? 0}%</td>
+                    <td>{zones.find((zone) => zone.id === bin.zone_id)?.name || '-'}</td>
+                    <td>{bin.last_collected ? new Date(bin.last_collected).toLocaleDateString() : '-'}</td>
                   </tr>
                 ))}
               </tbody>

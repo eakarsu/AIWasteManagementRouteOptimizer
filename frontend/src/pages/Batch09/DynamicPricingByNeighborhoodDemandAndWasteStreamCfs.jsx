@@ -1,5 +1,7 @@
 // // === Batch 09 Gaps & Frontend Mounts ===
 import React, { useState } from 'react';
+import NativeAIPresets from '../../components/NativeAIPresets';
+import AIReport from '../../components/AIReport';
 
 export default function DynamicPricingByNeighborhoodDemandAndWasteStreamPage() {
   const [input, setInput] = useState('');
@@ -27,6 +29,7 @@ export default function DynamicPricingByNeighborhoodDemandAndWasteStreamPage() {
     <div style={{ padding: 24, maxWidth: 900, margin: '0 auto' }}>
       <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>Dynamic pricing by neighborhood demand and waste stream</h1>
       <p style={{ color: '#666', marginBottom: 16 }}>Generated gap feature for AIWasteManagementRouteOptimizer.</p>
+      <NativeAIPresets disabled={loading} presets={[{ label: "Operations review", value: "Compare a hypothetical demand increase for commercial cardboard pickups and state the approvals needed for any pricing change." }, { label: "Exception scenario", value: "Analyze a seasonal yard waste scenario with limited collection capacity, noting equity and policy constraints." }, { label: "Planning example", value: "Draft a review of neighborhood demand signals and waste stream costs without assuming current tariff values." }]} onChoose={({ value }) => setInput(value)} />
       <textarea
         value={input}
         onChange={e => setInput(e.target.value)}
@@ -42,11 +45,7 @@ export default function DynamicPricingByNeighborhoodDemandAndWasteStreamPage() {
         {loading ? 'Running...' : 'Run AI'}
       </button>
       {error && <div style={{ color: 'red', marginTop: 12 }}>{error}</div>}
-      {result && (
-        <pre style={{ marginTop: 16, padding: 12, background: '#f4f4f4', borderRadius: 6, overflow: 'auto', maxHeight: 500 }}>
-{JSON.stringify(result, null, 2)}
-        </pre>
-      )}
+      <AIReport response={result} title="AI analysis" />
     </div>
   );
 }
