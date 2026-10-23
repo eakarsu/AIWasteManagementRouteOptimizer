@@ -21,6 +21,7 @@ import zonesRoutes from './routes/zones.js';
 import driversRoutes from './routes/drivers.js';
 import reportsRoutes from './routes/reports.js';
 import alertsRoutes from './routes/alerts.js';
+import featurePackRoutes from './routes/featurePack.js';
 
 dotenv.config({ path: fileURLToPath(new URL('../.env', import.meta.url)) });
 
@@ -56,6 +57,7 @@ app.use('/api/zones', zonesRoutes);
 app.use('/api/drivers', driversRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/alerts', alertsRoutes);
+app.use('/api/feature-pack', featurePackRoutes);
 
 if (generatedRoutesEnabled) {
   const generated = await Promise.all([

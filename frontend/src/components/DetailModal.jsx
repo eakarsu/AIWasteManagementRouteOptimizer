@@ -14,7 +14,7 @@ function DetailModal({ item, fields, onClose, onEdit, onDelete, title }) {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <div className="modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>{title || 'Details'}</h2>
           <button className="modal-close" onClick={onClose}>
@@ -30,17 +30,13 @@ function DetailModal({ item, fields, onClose, onEdit, onDelete, title }) {
           ))}
         </div>
         <div className="modal-footer">
-          {onEdit && (
-            <button className="btn btn-primary" onClick={() => onEdit(item)}>
-              <Edit size={16} /> Edit
-            </button>
-          )}
-          {onDelete && (
-            <button className="btn btn-danger" onClick={() => onDelete(item)}>
-              <Trash2 size={16} /> Delete
-            </button>
-          )}
-          <button className="btn btn-secondary" onClick={onClose}>Close</button>
+          <button className="btn btn-primary" onClick={() => onEdit ? onEdit(item) : onClose()}>
+            <Edit size={16} /> Edit
+          </button>
+          <button className="btn btn-danger" onClick={() => onDelete ? onDelete(item) : onClose()}>
+            <Trash2 size={16} /> Delete
+          </button>
+          <button className="btn btn-secondary" onClick={onClose}>Cancel</button>
         </div>
       </div>
     </div>
